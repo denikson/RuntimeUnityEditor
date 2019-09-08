@@ -6,6 +6,8 @@
     <ItemGroup>
       <InputAssemblies Include="$(OutputPath)\$(AssemblyName)1.dll" />
       <InputAssemblies Include="$(OutputPath)\mcs_custom.dll" />
+      <InputAssemblies Include="$(OutputPath)\MiniIPC.dll" />
+      <InputAssemblies Include="$(OutputPath)\MessagePack.dll" />
     </ItemGroup>
 
     <ILRepack

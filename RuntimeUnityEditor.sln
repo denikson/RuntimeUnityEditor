@@ -11,8 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuntimeUnityEditor.Bepin5",
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "RuntimeUnityEditor.Common", "RuntimeUnityEditor.Common\RuntimeUnityEditor.Common.shproj", "{653315B9-C637-4672-88D9-469FF345C94D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuntimeUnityEditor.UI", "RuntimeUnityEditor.UI\RuntimeUnityEditor.UI.csproj", "{29693809-7D21-420D-9093-DF7A152422BC}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		RuntimeUnityEditor.Common\RuntimeUnityEditor.Common.projitems*{29693809-7d21-420d-9093-df7a152422bc}*SharedItemsImports = 4
 		RuntimeUnityEditor.Common\RuntimeUnityEditor.Common.projitems*{653315b9-c637-4672-88d9-469ff345c94d}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +35,10 @@ Global
 		{E64CB875-BAFA-4B0F-BDC9-E33A15D5A87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E64CB875-BAFA-4B0F-BDC9-E33A15D5A87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E64CB875-BAFA-4B0F-BDC9-E33A15D5A87E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29693809-7D21-420D-9093-DF7A152422BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29693809-7D21-420D-9093-DF7A152422BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29693809-7D21-420D-9093-DF7A152422BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29693809-7D21-420D-9093-DF7A152422BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,7 @@
     <Import_RootNamespace>RuntimeUnityEditor.Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)MessagePack\UnityFormatters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamedPipeStream.cs" />
   </ItemGroup>
   <ItemGroup>

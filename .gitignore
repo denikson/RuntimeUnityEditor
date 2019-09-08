@@ -328,5 +328,10 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-/Libs
+/Libs/*
+!/Libs/ipc/
+/Libs/ipc/mpc
 *.DotSettings
+
+# MessagePack
+MessagePackGenerated.cs

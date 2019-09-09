@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="ILRepacker" BeforeTargets="DllExportMod">
+    <Move SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFiles="$(OutputPath)\$(AssemblyName)1.dll" />
+
+    <ItemGroup>
+      <InputAssemblies Include="$(OutputPath)\$(AssemblyName)1.dll" />
+      <InputAssemblies Include="$(OutputPath)\MessagePack.dll" />
+      <InputAssemblies Include="$(OutputPath)\MiniIPC.dll" />
+    </ItemGroup>
+
+    <ILRepack
+      Parallel="false"
+      Internalize="true"
+      DebugInfo="false"
+      LibraryPath="$(SolutionDir)Libs\;$(SolutionDir)packages\DllExport.1.6.5\gcache\metalib\$(DllExportNamespace)\"
+      InputAssemblies="@(InputAssemblies)"
+      TargetKind="Dll"
+      TargetPlatformVersion="v2"
+      OutputFile="$(OutputPath)\$(AssemblyName).dll"
+    />
+
+    <Delete Files="@(InputAssemblies)" />
+  </Target>
+</Project>

@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)MessagePack\UnityFormatters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NamedPipeStream.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Service\IRuntimeUnityEditorService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Data\" />

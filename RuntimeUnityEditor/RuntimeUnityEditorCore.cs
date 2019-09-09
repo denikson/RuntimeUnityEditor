@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using GhettoPipes;
+using MessagePack.Resolvers;
 using MiniIPC.Service;
 using RuntimeUnityEditor.Common.Service;
 using RuntimeUnityEditor.Core.Gizmos;
@@ -49,6 +50,8 @@ namespace RuntimeUnityEditor.Core
         {
             if (Instance != null)
                 throw new InvalidOperationException("Can only create one instance of the Core object");
+
+            CompositeResolver.RegisterAndSetAsDefault(GeneratedResolver.Instance, BuiltinResolver.Instance, PrimitiveObjectResolver.Instance);
 
             PluginObject = pluginObject;
             Logger = logger;

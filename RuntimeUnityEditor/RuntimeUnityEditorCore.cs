@@ -1,5 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Threading;
+using GhettoPipes;
+using MiniIPC.Service;
+using RuntimeUnityEditor.Common.Service;
 using RuntimeUnityEditor.Core.Gizmos;
 using RuntimeUnityEditor.Core.ObjectTree;
 using RuntimeUnityEditor.Core.REPL;
@@ -9,6 +14,14 @@ using UnityEngine;
 
 namespace RuntimeUnityEditor.Core
 {
+    public class Service : IRuntimeUnityEditorService
+    {
+        public void Echo(string message)
+        {
+            RuntimeUnityEditorCore.Logger.Log(LogLevel.Info, message);
+        }
+    }
+
     public class RuntimeUnityEditorCore
     {
         public const string Version = "1.8";
@@ -28,6 +41,9 @@ namespace RuntimeUnityEditor.Core
 
         private CursorLockMode _previousCursorLockState;
         private bool _previousCursorVisible;
+        private StreamServiceReceiver<IRuntimeUnityEditorService> serviceReceiver;
+        private NamedPipeStream receivePipeStream;
+        private Thread receiveThread;
 
         internal RuntimeUnityEditorCore(MonoBehaviour pluginObject, ILoggerWrapper logger, string configPath)
         {
@@ -37,6 +53,8 @@ namespace RuntimeUnityEditor.Core
             PluginObject = pluginObject;
             Logger = logger;
             Instance = this;
+
+            InitNativeGUI();
 
             Inspector = new Inspector.Inspector(targetTransform => TreeViewer.SelectAndShowObject(targetTransform));
 
@@ -66,6 +84,45 @@ namespace RuntimeUnityEditor.Core
                 {
                     Logger.Log(LogLevel.Warning, "Failed to load REPL - " + ex.Message);
                 }
+            }
+        }
+
+        private delegate void ShowGUIDelegate();
+
+        private ShowGUIDelegate ShowGUI;
+
+        private void InitNativeGUI()
+        {
+            var libPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                                       "RuntimeUnityEditor.UI.dll");
+
+            Logger.Log(LogLevel.Info, $"Lib path: {libPath}");
+            var lib = NativeUtils.LoadNativeLibrary(libPath);
+
+            if (lib == null)
+            {
+                Logger.Log(LogLevel.Error, "No UI library found!");
+                return;
+            }
+
+            ShowGUI = lib.GetFunctionAsDelegate<ShowGUIDelegate>(nameof(ShowGUI));
+
+            receivePipeStream = NamedPipeStream.Create("RuntimeUnityEditor_Service", NamedPipeStream.PipeDirection.InOut, securityDescriptor: "D:(A;OICI;GA;;;WD)");
+            serviceReceiver = new StreamServiceReceiver<IRuntimeUnityEditorService>(new Service(), receivePipeStream);
+            receiveThread = new Thread(ReceiveLoop);
+            receiveThread.Start();
+        }
+
+        private void ReceiveLoop()
+        {
+            Logger.Log(LogLevel.Info, "Waiting for connection...");
+            receivePipeStream.WaitForConnection();
+            Logger.Log(LogLevel.Info, "Got connection! Processing messages!");
+
+            while (true)
+            {
+                serviceReceiver.ProcessMessage();
+                receivePipeStream.Flush();
             }
         }
 
@@ -126,6 +183,13 @@ namespace RuntimeUnityEditor.Core
 
         internal void Update()
         {
+            if (Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                Logger.Log(LogLevel.Info, "Starting GUI");
+                ShowGUI();
+                return;
+            }
+
             if (Input.GetKeyDown(ShowHotkey))
                 Show = !Show;
 

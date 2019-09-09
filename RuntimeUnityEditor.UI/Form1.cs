@@ -15,6 +15,18 @@ namespace RuntimeUnityEditor.UI
         public Form1()
         {
             InitializeComponent();
+            Shown += OnShown;
+        }
+
+        private void OnShown(object sender, EventArgs e)
+        {
+            RuntimeUnityEditor.InitializeConnection();
+            RuntimeUnityEditor.Service.Echo("Hello from UI!");
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            RuntimeUnityEditor.Service.Echo(textBox1.Text);
         }
     }
 }

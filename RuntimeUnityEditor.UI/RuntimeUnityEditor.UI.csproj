@@ -81,10 +81,16 @@
     </Compile>
     <Compile Include="MessagePack\UnityShims.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RuntimeUnityEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ILRepack.targets" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="..\RuntimeUnityEditor.Common\RuntimeUnityEditor.Common.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -106,6 +112,6 @@
     <Error Condition="!Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.17\build\ILRepack.Lib.MSBuild.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.Lib.MSBuild.Task.2.0.17\build\ILRepack.Lib.MSBuild.Task.targets'))" />
   </Target>
   <Target Name="BuildIPCProxies" BeforeTargets="ILRepacker">
-    <Exec Command='"$(SolutionDir)\libs\ipc\IPCGen.exe" "$(TargetPath)"' />
+    <Exec Command="&quot;$(SolutionDir)\libs\ipc\IPCGen.exe&quot; &quot;$(TargetPath)&quot;" />
   </Target>
 </Project>
